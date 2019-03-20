@@ -18,7 +18,8 @@ GNU General Public License for more details.
  */
  
  // The Admin Page for Bot token, Webhook and Users
- include "tg-wp-admin-page.php";
+include "tg-wp-admin-page.php";
+include "tg-wp-send-procedures.php";
 
 
 
