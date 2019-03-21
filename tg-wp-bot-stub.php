@@ -20,6 +20,7 @@ GNU General Public License for more details.
  // The Admin Page for Bot token, Webhook and Users
 include "tg-wp-admin-page.php";
 include "tg-wp-send-procedures.php";
+include "tg-wp-main-process.php";
 
 // all the actions we need to do on activation of the plugin
 register_activation_hook( __FILE__, 'tg_wp_activate' );

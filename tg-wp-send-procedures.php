@@ -77,7 +77,7 @@ function tg_wp_check_if_is_wp_telegram_login_user()
 	return $user_array;
 }
 
-function tg_wp_user_is_alowed_to_use_bot($chat_id = '')
+function tg_wp_user_is_allowed_to_use_bot($chat_id = '')
 {
 	$return = false;
 	// We need the check here for the restrictions
@@ -96,33 +96,6 @@ function tg_wp_user_is_alowed_to_use_bot($chat_id = '')
 		$return = true;
 	}
 	return $return;
-}
-
-function run_tg_wp_process($request)
-{
-	$parameters = $request->get_json_params();
-	$chat_id = $parameters['message']['chat']['id'];
-	
-	if(tg_wp_user_is_alowed_to_use_bot((string)$chat_id) === false)
-	{
-
-	}		
-	else
-	{
-	$telegram_username = $parameters['message']['chat']['username'];
-	$telegram_firstname = $parameters['message']['chat']['first_name'];
-	$text = $parameters['message']['text'];
-
-	// currently it only sends the text back you send to it
-
-	$input = array();
-	$input['command'] = "sendMessage";
-	$input['body'] = array(
-		"chat_id" => $chat_id,
-		"text" => $chat_id.$text.tg_wp_user_is_alowed_to_use_bot($chat_id)
-	);
-	tg_wp_send($input);
-	}
 }
 
 ?>
