@@ -36,6 +36,7 @@ function render_tg_wp_admin_page()
 	}
 	
 	echo '<pre>';
+		var_dump(tg_wp_check_if_is_wp_telegram_login_user());
 		var_dump(tg_wp_user_is_alowed_to_use_bot("197094729"));
 	echo '</pre>';
 	
