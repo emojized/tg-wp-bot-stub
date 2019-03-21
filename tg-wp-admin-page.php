@@ -20,12 +20,12 @@ function render_tg_wp_admin_page()
 		update_option('tg_wp_bottoken', $token, false);
 		$restriction = sanitize_text_field($_POST['tg_wp_restriction']);
 		update_option('tg_wp_restriction', $restriction, false);
-		$restriction_chat_ids = explode(';',sanitize_text_field($_POST['tg_wp_restriction_chat_ids']));
-		update_option('tg_wp_restriction_chat_ids', $restriction_chat_ids, false);	
+		$restriction_chat_ids = explode(';', sanitize_text_field($_POST['tg_wp_restriction_chat_ids']));
+		update_option('tg_wp_restriction_chat_ids', $restriction_chat_ids, false);
 		$webhook_secret_string = get_option('tg_wp_weebhook_route', false);
 		$input['command'] = "setWebhook";
 		$input['body'] = array(
-			"url" => get_bloginfo("url") . "/wp-json/tg-wp-routes/v1/".$webhook_secret_string
+			"url" => get_bloginfo("url") . "/wp-json/tg-wp-routes/v1/" . $webhook_secret_string
 		);
 		$wbhk_response = tg_wp_send($input);
 	}
@@ -34,7 +34,7 @@ function render_tg_wp_admin_page()
 		$input['command'] = "getWebhookInfo";
 		$wbhk_response = tg_wp_send($input);
 	}
-	
+
 	$bot_token = get_option('tg_wp_bottoken', true);
 	echo '<table class="widefat striped">';
 	echo '<form method="POST">';
@@ -57,11 +57,11 @@ function render_tg_wp_admin_page()
 	echo '<tr>';
 	echo '<td>';
 	echo '<span class="importer-title">Webhook</span>';
-	echo '<span class="importer-action">Webhook response of command '.$input['command'] .'</span>';
+	echo '<span class="importer-action">Webhook response of command ' . $input['command'] . '</span>';
 	echo '</td>';
 	echo '<td class="desc">';
 	echo '<span class="importer-desc"><pre>';
-	echo str_replace(",",",\n", $wbhk_response['body']);
+	echo str_replace(",", ",\n", $wbhk_response['body']);
 	echo '</pre></span>';
 	echo '</td>';
 	echo '</tr>';
@@ -74,23 +74,22 @@ function render_tg_wp_admin_page()
 	echo '<span class="importer-action">Select if you wanna restrict your bot<br />to specific Chat IDs</span>';
 	echo '</td>';
 	echo '<td class="desc">';
-		
-	$tg_wp_restriction = get_option("tg_wp_restriction",false);	
+	$tg_wp_restriction = get_option("tg_wp_restriction", false);
 	echo '<label><input type="radio" name="tg_wp_restriction" value="false" ';
-	if($tg_wp_restriction == false || $tg_wp_restriction == "false") echo 'checked="checked" ';
+	if ($tg_wp_restriction == false || $tg_wp_restriction == "false") echo 'checked="checked" ';
 	echo '/> No restriction</label><br />';
 	echo '<label><input type="radio" name="tg_wp_restriction" value="chat-ids" ';
-	if($tg_wp_restriction == "chat-ids") echo 'checked="checked" ';	
+	if ($tg_wp_restriction == "chat-ids") echo 'checked="checked" ';
 	echo '/> By chat_id (divided by ;)</label><br />';
-	$tg_wp_restriction_chat_ids = implode(';',get_option("tg_wp_restriction_chat_ids",false));	
-	echo '<input type="text" name="tg_wp_restriction_chat_ids" value="'.$tg_wp_restriction_chat_ids.'" /><br />';
-	if(class_exists('WPTelegram_Login'))
+	$tg_wp_restriction_chat_ids = implode(';', get_option("tg_wp_restriction_chat_ids", false));
+	echo '<input type="text" name="tg_wp_restriction_chat_ids" value="' . $tg_wp_restriction_chat_ids . '" /><br />';
+	if (class_exists('WPTelegram_Login'))
 	{
 		echo '<label><input type="radio" name="tg_wp_restriction" value="wp-telegram-login" ';
-		if($tg_wp_restriction == "wp-telegram-login") echo 'checked="checked" ';	
+		if ($tg_wp_restriction == "wp-telegram-login") echo 'checked="checked" ';
 		echo '/> By WPTelegram Login (by Manzoor Wani)</label>';
-
 	}
+
 	echo '</td>';
 	echo '</tr>';
 	echo '</tbody>';
