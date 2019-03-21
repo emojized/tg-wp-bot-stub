@@ -62,10 +62,50 @@ function ($routes)
 	return $routes;
 });
 
+function tg_wp_check_if_is_wp_telegram_login_user()
+{
+	$users = get_users(array(
+		'meta_key'     => 'wptelegram_login_user_id',
+	));
+	
+	$user_array = array();
+	foreach($users as $user)
+	{
+		$user_array[] = get_user_meta($user->data->ID,'wptelegram_login_user_id', true);
+	}
+	
+	return $user_array;
+}
+
+function tg_wp_user_is_alowed_to_use_bot($chat_id = '')
+{
+	$return = false;
+	// We need the check here for the restrictions
+	$tg_wp_restriction = get_option("tg_wp_restriction",false);
+	
+	if((
+		$tg_wp_restriction == "wp-telegram-login" && 
+		class_exists('WPTelegram_Login') && 
+		in_array($chat_id, tg_wp_check_if_is_wp_telegram_login_user())
+		)||
+		($tg_wp_restriction == "chat-ids" && in_array($chat_id, get_option("tg_wp_restriction_chat_ids",false))))
+		
+	{
+		$return = true;
+	}
+	return $return;
+}
+
 function run_tg_wp_process($request)
 {
 	$parameters = $request->get_json_params();
 	$chat_id = $parameters['message']['chat']['id'];
+	
+	if(tg_wp_user_is_alowed_to_use_bot($chat_id) == false)
+	{
+		return; 
+	}		
+	
 	$telegram_username = $parameters['message']['chat']['username'];
 	$telegram_firstname = $parameters['message']['chat']['first_name'];
 	$text = $parameters['message']['text'];
