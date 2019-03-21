@@ -83,12 +83,14 @@ function tg_wp_user_is_alowed_to_use_bot($chat_id = '')
 	// We need the check here for the restrictions
 	$tg_wp_restriction = get_option("tg_wp_restriction",false);
 	
-	if((
-		$tg_wp_restriction == "wp-telegram-login" && 
+	if($tg_wp_restriction == "wp-telegram-login" && 
 		class_exists('WPTelegram_Login') && 
-		in_array($chat_id, tg_wp_check_if_is_wp_telegram_login_user())
-		)||
-		($tg_wp_restriction == "chat-ids" && in_array($chat_id, get_option("tg_wp_restriction_chat_ids",false))))
+		in_array($chat_id, tg_wp_check_if_is_wp_telegram_login_user(), true)
+		)
+	{
+		$return = true;
+	}
+	if	($tg_wp_restriction == "chat-ids" && in_array($chat_id, get_option("tg_wp_restriction_chat_ids",true)))
 		
 	{
 		$return = true;
@@ -101,11 +103,12 @@ function run_tg_wp_process($request)
 	$parameters = $request->get_json_params();
 	$chat_id = $parameters['message']['chat']['id'];
 	
-	if(tg_wp_user_is_alowed_to_use_bot($chat_id) == false)
+	if(tg_wp_user_is_alowed_to_use_bot((string)$chat_id) === false)
 	{
-		return; 
+
 	}		
-	
+	else
+	{
 	$telegram_username = $parameters['message']['chat']['username'];
 	$telegram_firstname = $parameters['message']['chat']['first_name'];
 	$text = $parameters['message']['text'];
@@ -116,9 +119,10 @@ function run_tg_wp_process($request)
 	$input['command'] = "sendMessage";
 	$input['body'] = array(
 		"chat_id" => $chat_id,
-		"text" => $text
+		"text" => $chat_id.$text.tg_wp_user_is_alowed_to_use_bot($chat_id)
 	);
 	tg_wp_send($input);
+	}
 }
 
 ?>
