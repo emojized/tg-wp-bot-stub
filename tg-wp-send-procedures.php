@@ -95,6 +95,13 @@ function tg_wp_user_is_allowed_to_use_bot($chat_id = '')
 	{
 		$return = true;
 	}
+	if($tg_wp_restriction == false || $tg_wp_restriction == "false")
+		
+	{
+		$return = true;
+	}
+	
+	
 	return $return;
 }
 
