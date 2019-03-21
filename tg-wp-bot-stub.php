@@ -21,6 +21,13 @@ GNU General Public License for more details.
 include "tg-wp-admin-page.php";
 include "tg-wp-send-procedures.php";
 
-
+// all the actions we need to do on activation of the plugin
+register_activation_hook( __FILE__, 'tg_wp_activate' );
+function tg_wp_activate()
+{
+    // we generate the Webhook Route  so that the reader of the code cannot guess what it is.
+    // we use the add_option because it does nothing if already access
+    add_option("tg_wp_weebhook_route", substr(md5(crc32 ( date("U") )), 0, 10));
+}
 
  ?>

@@ -17,10 +17,11 @@ function render_tg_wp_admin_page()
 	if (isset($_POST['wp_tg_bottoken']) && wp_verify_nonce($_POST['tg_wp_nonce_field'], 'tg_wp_save_options'))
 	{
 		$token = sanitize_text_field($_POST['wp_tg_bottoken']);
-		update_option('tg_wp_bottoken', $token, true);
+		update_option('tg_wp_bottoken', $token, false);
+		$webhook_secret_string = get_option('tg_wp_weebhook_route', false);
 		$input['command'] = "setWebhook";
 		$input['body'] = array(
-			"url" => get_bloginfo("url") . "/wp-json/tg-wp-routes/v1/routeC76477"
+			"url" => get_bloginfo("url") . "/wp-json/tg-wp-routes/v1/".$webhook_secret_string
 		);
 		$wbhk_response = tg_wp_send($input);
 	}
@@ -52,11 +53,11 @@ function render_tg_wp_admin_page()
 	echo '<tr>';
 	echo '<td>';
 	echo '<span class="importer-title">Webhook</span>';
-	echo '<span class="importer-action">Webhook Response</span>';
+	echo '<span class="importer-action">Webhook response of command '.$input['command'] .'</span>';
 	echo '</td>';
 	echo '<td class="desc">';
 	echo '<span class="importer-desc"><pre>';
-	echo $wbhk_response['body'];
+	echo str_replace(",",",\n", $wbhk_response['body']);
 	echo '</pre></span>';
 	echo '</td>';
 	echo '</tr>';

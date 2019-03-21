@@ -32,13 +32,34 @@ function tg_wp_send($input = array())
 	return $message;
 }
 
-add_action('rest_api_init',
-function ()
+add_action('rest_api_init', function ()
 {
-	register_rest_route('tg-wp-routes/v1', 'routeC76477', array(
+	$webhook_secret_string = get_option('tg_wp_weebhook_route', false);
+	register_rest_route('tg-wp-routes/v1', $webhook_secret_string, array(
 		'methods' => 'POST',
 		'callback' => 'run_tg_wp_process'
 	));
+});
+
+// we have to hide our own Endpoints for Security reasons
+
+add_filter('rest_route_data',
+function ($routes)
+{
+	$webhook_secret_string = get_option('tg_wp_weebhook_route', false);
+	$hiddenRoutes = array(
+		'/tg-wp-routes/v1',
+		'/tg-wp-routes/v1/'. $webhook_secret_string
+		);
+	foreach($routes as $key => $route)
+	{
+		if (in_array($key, $hiddenRoutes))
+		{
+			unset($routes[$key]);
+		}
+	}
+
+	return $routes;
 });
 
 function run_tg_wp_process($request)
