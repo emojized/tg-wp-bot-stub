@@ -26,7 +26,7 @@ function tg_wp_send($input = array())
 	}
 	else
 	{
-		$message = $response;
+		$message = $response['body'];
 	}
 
 	return $message;
