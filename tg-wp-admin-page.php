@@ -61,7 +61,7 @@ function render_tg_wp_admin_page()
 	echo '</td>';
 	echo '<td class="desc">';
 	echo '<span class="importer-desc"><pre>';
-	echo str_replace(",", ",\n", $wbhk_response['body']);
+	echo str_replace(",", ",\n", $wbhk_response);
 	echo '</pre></span>';
 	echo '</td>';
 	echo '</tr>';
