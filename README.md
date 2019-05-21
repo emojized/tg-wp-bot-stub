@@ -5,7 +5,6 @@ This a WordPress plugin for one single purpose. Simplify the process of creating
 Download the plugin and install it into WordPress via FTP or Backend.
 
 Hi to the settings page "TG WP Bot" and insert the bot token retrieved by t.me/botfather .
-
 Afterwards you are all set, the Telegram bot should answer you the exact same phrase you send to it.
 
 ## Features
