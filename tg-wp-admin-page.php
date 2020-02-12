@@ -32,6 +32,7 @@ function render_tg_wp_admin_page()
 	else
 	{
 		$input['command'] = "getWebhookInfo";
+		$input['body'] = '';
 		$wbhk_response = tg_wp_send($input);
 	}
 
@@ -81,7 +82,15 @@ function render_tg_wp_admin_page()
 	echo '<label><input type="radio" name="tg_wp_restriction" value="chat-ids" ';
 	if ($tg_wp_restriction == "chat-ids") echo 'checked="checked" ';
 	echo '/> By chat_id (divided by ;)</label><br />';
-	$tg_wp_restriction_chat_ids = implode(';', get_option("tg_wp_restriction_chat_ids", false));
+	$restriction_chat_ids = get_option("tg_wp_restriction_chat_ids", false);
+	if ( $restriction_chat_ids )
+	{
+		$tg_wp_restriction_chat_ids = implode(';', $restriction_chat_ids );
+	}
+	else
+	{
+		$tg_wp_restriction_chat_ids = '';
+	}
 	echo '<input type="text" name="tg_wp_restriction_chat_ids" value="' . $tg_wp_restriction_chat_ids . '" /><br />';
 	if (class_exists('WPTelegram_Login'))
 	{
