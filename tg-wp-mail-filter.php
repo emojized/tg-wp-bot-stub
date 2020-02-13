@@ -12,17 +12,8 @@ function tg_wp_mail_filter( $args )
 	if ( $tg_wp_mail_activated == 'on')
 	{
 		
-		// who is receipient
-		$to = $args['to'] ;
-		
-		// first we kill the to field, to let PHP Mailer not send
-		// emails anymore
-		unset ( $args['to'] );
-		
-
-		
 		// now we set the tg_message
-		$tg_message = $to ."\n";
+		$tg_message = $args['to'] ."\n";
 		$tg_message .= $args['subject'] ."\n";
 		$tg_message .= $args['message'] ."\n";
 		$tg_message .= $args['headers'] ."\n";
@@ -72,10 +63,20 @@ function tg_wp_mail_filter( $args )
 		}
 		
 		
+		return array (
+			'to' => "",
+			'headers' => "",
+			'message' => "",
+			'subject' => ""
+			);
 		
 	}
+	else
+	{
+		// We only return args , when filter is inactive
+		return $args;
+	}
 
-	return $args;
 }
 
 

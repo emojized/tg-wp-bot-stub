@@ -4,7 +4,7 @@ Plugin Name: TG WP Bot Stub
 Plugin URI: https://www.wp-plugin-dev.com
 Description: This is the foundation of Telegram bot running inside WordPress
 Author: @wpplugindevcom
-Version: 0.2
+Version: 0.3
 Author URI: https://www.wp-plugin-dev.com
 License: GPL2
 
